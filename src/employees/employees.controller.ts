@@ -35,8 +35,8 @@ import {response} from 'src/utils/response';
     @Get()
     async findAll(@Res() res: Response) {
         try {
-            const data = await this.employeesService.findAll();
-            return response.success(res, "Employee list loaded", data)
+            const {msg,statusCode,success,data} = await this.employeesService.findAll();
+            return response.success(res,msg,data)
           } catch (err) {
             console.error(err);
             return response.serverError(res, 'Something went wrong');

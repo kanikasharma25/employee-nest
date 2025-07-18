@@ -1,7 +1,9 @@
 export const MESSAGES = {
     EMPLOYEE_CREATED: 'Employee created successfully',
-    EMPLOYEE_FETCHED: 'Employee list loaded',
+    EMPLOYEE_FETCHED_ALL: 'Employee list loaded',
+    EMPLOYEE_FETCHED_ONE: 'Employee list loaded',
     EMPLOYEE_NOT_FOUND: 'Employee not found',
+    EMPLOYEE_EMAIL_EXISTS: 'Employee already registered with this email',
     SOMETHING_WENT_WRONG: 'Something went wrong',
   };
   
