@@ -7,7 +7,7 @@ import { Employee, EmployeeDocument } from './schemas/employee.schema';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { MESSAGES, STATUS_CODES } from 'src/constants/const';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class EmployeesService {
@@ -53,17 +53,61 @@ export class EmployeesService {
     
   }
 
-  async findOne(id: string): Promise<Employee | null> {
-    return this.employeeModel.findById(id).exec();
+  async findOne(id: string): Promise<any> {
+    let data = await this.employeeModel.findById(id).exec();
+    if(!data){
+      return {
+        success: false,
+        statusCode: STATUS_CODES.NOT_FOUND,
+        msg: MESSAGES.EMPLOYEE_NOT_FOUND,
+        data: {}
+      }
+    }
+    return {
+      success: true,
+      statusCode: STATUS_CODES.OK,
+      msg: MESSAGES.EMPLOYEE_FETCHED_ONE,
+      data: data
+    }
   }
 
-  async update(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee | null> {
+  async update(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<any> {
     const { email, password, ...safeUpdates } = updateEmployeeDto;
-    return this.employeeModel.findByIdAndUpdate(id, safeUpdates, { new: true }).exec();
+    let data = await this.employeeModel.findByIdAndUpdate(id, safeUpdates, { new: true }).exec();
+    if(!data){
+      return {
+        success: false,
+        statusCode: STATUS_CODES.BAD_REQUEST,
+        data: {},
+        msg: MESSAGES.EMPLOYEE_UPDATE_FAILED
+      }
+    }
+    return {
+      success: true,
+      statusCode: STATUS_CODES.OK,
+      data: data,
+      msg: MESSAGES.EMPLOYEE_UPDATE_PASSED
+    }
   }
 
-  async remove(id: string): Promise<Employee | null> {
-    return this.employeeModel.findByIdAndDelete(id).exec();
+  async remove(id: string): Promise<any> {
+    let data= await this.employeeModel.findByIdAndDelete(id).exec();
+    if(!data){
+      return {
+        success: false,
+        statusCode: STATUS_CODES.BAD_REQUEST,
+        data: {},
+        msg: MESSAGES.EMPLOYEE_DELETE_FAILED
+      }
+    }
+    return {
+      success: true,
+      statusCode: STATUS_CODES.OK,
+      data: data,
+      msg: MESSAGES.EMPLOYEE_DELETE_PASSED
+    }
   }
+
+  
 }
 
