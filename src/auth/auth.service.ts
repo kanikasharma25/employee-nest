@@ -6,6 +6,7 @@ import { SignupDto } from './dto/signup.dto';
 import * as bcrypt from 'bcrypt';
 import { MESSAGES, STATUS_CODES } from 'src/constants/const';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -27,16 +28,17 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    let rndm = Math.random().toString();
     const newUser = new this.authModel({
       name,
       email,
       password: hashedPassword,
+      tokenTracker: rndm
     });
 
     const savedUser = await newUser.save();
 
-    const payload = { sub: savedUser._id, email: savedUser.email };
+    const payload = { sub: savedUser._id, email: savedUser.email, tokenTracker: savedUser.tokenTracker };
 
     const token = this.jwtService.sign(payload);
     let user = {
@@ -50,6 +52,49 @@ export class AuthService {
       statusCode: STATUS_CODES.CREATED,
       data: user,
     };
+
+  }
+
+  async login(loginDto: LoginDto): Promise<any>{
+
+    let {email, password} = loginDto
+    let exists = await this.authModel.findOne({email})
+
+    if(!exists) {
+      return {
+        success: false,
+        data: {},
+        msg: MESSAGES.WRONG_CREDENTIALS,
+        statusCode: 401
+      }
+    }
+
+    let isPassMatch = await bcrypt.compare(loginDto.password, exists.password)
+    if(!isPassMatch){
+      return {
+        success: false,
+        data: {},
+        msg: MESSAGES.WRONG_CREDENTIALS,
+        statusCode: 401
+      }
+    }
+    let rndm = Math.random().toString();
+    exists.tokenTracker = rndm;
+    await exists.save() 
+    const payload = { sub: exists._id, email: exists.email, tokenTracker: rndm };
+
+    const token = this.jwtService.sign(payload);
+    let user = {
+      ...exists.toObject(),
+      token: token
+    }
+
+    return {
+      success: true,
+      data: user,
+      msg: MESSAGES.LOGIN_DONE,
+      statusCode: 200
+    }
 
   }
 

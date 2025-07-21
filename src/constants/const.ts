@@ -1,5 +1,6 @@
 
 export const MESSAGES = {
+  
   EMPLOYEE_CREATED: 'Employee created successfully',
   EMPLOYEE_FETCHED_ALL: 'Employee list loaded',
   EMPLOYEE_FETCHED_ONE: 'Employee data loaded',
@@ -11,13 +12,20 @@ export const MESSAGES = {
   EMAIL_EXISTS: 'Email already exists',
   SOMETHING_WENT_WRONG: 'Something went wrong',
   SIGNUP_DONE: 'Signup successful',
-  USER_DATA_LOADED: 'User data loaded'
+  USER_DATA_LOADED: 'User data loaded',
+  TOKEN_ERROR: 'Token missing or invalid',
+  LOGIN_DONE: 'Login done',
+  WRONG_CREDENTIALS: 'Wrong credentials',
+  TOKEN_EXPIRED: 'Token expired'
+
 };
 
 export const STATUS_CODES = {
+
   OK: 200,
   CREATED: 201,
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   INTERNAL_ERROR: 500,
+
 };
