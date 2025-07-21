@@ -21,7 +21,7 @@ export class EmployeesService {
       return {
         success: false,
         statusCode: STATUS_CODES.BAD_REQUEST,
-        msg: MESSAGES.EMPLOYEE_EMAIL_EXISTS,
+        msg: MESSAGES.EMAIL_EXISTS,
         data: {}
       }
     }
@@ -59,7 +59,7 @@ export class EmployeesService {
       return {
         success: false,
         statusCode: STATUS_CODES.NOT_FOUND,
-        msg: MESSAGES.EMPLOYEE_NOT_FOUND,
+        msg: MESSAGES.NOT_FOUND,
         data: {}
       }
     }
@@ -75,7 +75,7 @@ export class EmployeesService {
     const { email, password, ...safeUpdates } = updateEmployeeDto;
     let data = await this.employeeModel.findByIdAndUpdate(id, safeUpdates, { new: true }).exec();
     if(!data){
-      return {
+       return {
         success: false,
         statusCode: STATUS_CODES.BAD_REQUEST,
         data: {},
@@ -107,7 +107,5 @@ export class EmployeesService {
       msg: MESSAGES.EMPLOYEE_DELETE_PASSED
     }
   }
-
-  
 }
 

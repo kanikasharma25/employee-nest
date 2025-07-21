@@ -7,9 +7,11 @@ export const MESSAGES = {
   EMPLOYEE_UPDATE_PASSED: 'Employe updated successfully',
   EMPLOYEE_DELETE_FAILED: 'Employe deletion failed',
   EMPLOYEE_DELETE_PASSED: 'Employe deleted successfully',
-  EMPLOYEE_NOT_FOUND: 'Employee not found',
-  EMPLOYEE_EMAIL_EXISTS: 'Employee already registered with this email',
+  NOT_FOUND: 'Not found',
+  EMAIL_EXISTS: 'Email already exists',
   SOMETHING_WENT_WRONG: 'Something went wrong',
+  SIGNUP_DONE: 'Signup successful',
+  USER_DATA_LOADED: 'User data loaded'
 };
 
 export const STATUS_CODES = {
