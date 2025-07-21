@@ -18,6 +18,9 @@ export class Auth {
 
     @Prop({required: true})
     tokenTracker: string;
+
+    @Prop()
+    profileImage: string;
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);

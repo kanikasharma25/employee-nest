@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Auth, AuthDocument } from './schemas/auth.schema';
@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { MESSAGES, STATUS_CODES } from 'src/constants/const';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
+import { updateDto } from './dto/update.dto';
 
 @Injectable()
 export class AuthService {
@@ -117,5 +118,32 @@ export class AuthService {
     };
 
   }
+
+  async updateProfile(userId: string, updateDto: updateDto): Promise<any> {
+  
+      const updatedUser = await this.authModel.findByIdAndUpdate(
+        userId,
+        { $set: updateDto },
+        { new: true }
+      );
+  
+      if (!updatedUser) {
+        return {
+          success: false,
+          statusCode: STATUS_CODES.NOT_FOUND,
+          msg: MESSAGES.NOT_FOUND,
+          data: {},
+        };
+      }
+  
+      return {
+        success: true,
+        statusCode: STATUS_CODES.OK,
+        msg: MESSAGES.PROFILE_UPDATED,
+        data: updatedUser,
+      };
+
+  }
+  
 
 }

@@ -16,7 +16,8 @@ export const MESSAGES = {
   TOKEN_ERROR: 'Token missing or invalid',
   LOGIN_DONE: 'Login done',
   WRONG_CREDENTIALS: 'Wrong credentials',
-  TOKEN_EXPIRED: 'Token expired'
+  TOKEN_EXPIRED: 'Token expired',
+  PROFILE_UPDATED: 'Profile updated successfully'
 
 };
 
