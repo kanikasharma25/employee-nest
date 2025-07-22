@@ -1,9 +1,12 @@
 
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 @Schema({timestamps: true})
 export class Post{
+
+ @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Auth',defaulr: null})
+ userId: mongoose.Schema.Types.ObjectId;  
 
  @Prop({default: ''})
  title: string;
@@ -18,4 +21,4 @@ export class Post{
 
 export type PostDocument = Post & Document
 
-export const EmployeeSchema = SchemaFactory.createForClass(Post)
+export const PostSchema = SchemaFactory.createForClass(Post)

@@ -17,8 +17,8 @@ export const MESSAGES = {
   LOGIN_DONE: 'Login done',
   WRONG_CREDENTIALS: 'Wrong credentials',
   TOKEN_EXPIRED: 'Token expired',
-  PROFILE_UPDATED: 'Profile updated successfully'
-
+  PROFILE_UPDATED: 'Profile updated successfully',
+  POST_CREATED: 'Post created successfully'
 };
 
 export const STATUS_CODES = {
