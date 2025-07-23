@@ -4,6 +4,7 @@ import { Post, PostDocument } from "./schemas/post.schema";
 import mongoose, { Model } from "mongoose";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { MESSAGES, STATUS_CODES } from "src/constants/const";
+import { PostImageAddDto } from "./dto/addImage-post.dto";
 
 @Injectable()
 export class PostService {
@@ -11,6 +12,42 @@ export class PostService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
   ) { }
+
+  async postImgAdd(postImageAddDto: PostImageAddDto, imageObjects: { url: string }[]): Promise<any> {
+
+    const { postId } = postImageAddDto;
+
+    const existsPost = await this.postModel.findById(postId);
+    if (!existsPost) {
+      return {
+        success: false,
+        statusCode: STATUS_CODES.NOT_FOUND,
+        data: {},
+        msg: MESSAGES.POST_NOT_FOUND,
+      };
+    }
+
+    await this.postModel.updateOne(
+      { _id: postId },
+      {
+        $push: {
+          images: {
+            $each: imageObjects,
+          },
+        },
+      },
+    );
+
+    const updatedPost = await this.postModel.findById(postId);
+
+    return {
+      success: true,
+      statusCode: STATUS_CODES.OK,
+      data: updatedPost,
+      msg: MESSAGES.POST_NEW_IMAGE_ADD,
+    };
+    
+  }
 
   async postImgDelete(postId: string, imgId: string): Promise<any> {
      let existsPost = await this.postModel.findOne({_id: postId})

@@ -9,10 +9,4 @@ export class CreatePostDto {
   @IsString()
   description: string;
 
-  @IsOptional()
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  images?: string[];
-
 }

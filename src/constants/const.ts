@@ -23,6 +23,7 @@ export const MESSAGES = {
   POST_NOT_FOUND: "Post did not exists",
   POST_IMG_DELETE_ERR: "Image not found in post",
   POST_IMG_MARKED_DELETED:"Image marked as deleted successfully",
+  POST_NEW_IMAGE_ADD: "Post's images updated successfully"
 };
 
 export const STATUS_CODES = {
