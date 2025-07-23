@@ -18,7 +18,11 @@ export const MESSAGES = {
   WRONG_CREDENTIALS: 'Wrong credentials',
   TOKEN_EXPIRED: 'Token expired',
   PROFILE_UPDATED: 'Profile updated successfully',
-  POST_CREATED: 'Post created successfully'
+  POST_CREATED: 'Post created successfully',
+  USER_POST_LOADED: "User's all post loaded",
+  POST_NOT_FOUND: "Post did not exists",
+  POST_IMG_DELETE_ERR: "Image not found in post",
+  POST_IMG_MARKED_DELETED:"Image marked as deleted successfully",
 };
 
 export const STATUS_CODES = {

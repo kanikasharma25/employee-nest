@@ -87,7 +87,7 @@ export class AuthController {
       const userId = req.user.userId;
 
       if (file) {
-        updateDto.profileImage = file.filename;
+        updateDto.profileImage = file.path;
       }
 
       const { data, msg, statusCode, success } = await this.authService.updateProfile(userId, updateDto);
