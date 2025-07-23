@@ -10,7 +10,7 @@ export class Post{
 
  @Prop({default: ''})
  title: string;
-
+ 
  @Prop({default: ''})
  description: string;
 
