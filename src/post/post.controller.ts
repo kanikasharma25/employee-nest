@@ -137,6 +137,21 @@ export class PostController {
           return response.serverError(res, MESSAGES.SOMETHING_WENT_WRONG, error.message);
         }
       }
+
+      @Get('/view/:postId')
+      async postView ( @Param('postId') postId: string, @Res() res: Response){
+        try {
+
+            let {data,msg,success,statusCode} = await this.postService.postView(postId)
+            if(!success){
+                return response.badRequest(res, msg,)
+            }
+
+            } catch (error) {
+            console.log(error)
+            return response.serverError(res, MESSAGES.SOMETHING_WENT_WRONG, error.message)
+        }
+      }
       
 
 

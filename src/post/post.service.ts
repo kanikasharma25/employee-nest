@@ -13,6 +13,25 @@ export class PostService {
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
   ) { }
 
+  async postView(postId: string): Promise<any> {
+    let exists = await this.postModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(postId)
+        }
+      }
+    ])
+    console.log(exists, " Exists =-=-=-=-=-=-=-=-=-=-=-= Exists ")
+    if (!exists) {
+      return {
+        success: false,
+        msg: MESSAGES.POST_NOT_FOUND,
+        statusCode: STATUS_CODES.NOT_FOUND,
+        data: {}
+      }
+    }
+  }
+
   async postImgAdd(postImageAddDto: PostImageAddDto, imageObjects: { url: string }[]): Promise<any> {
 
     const { postId } = postImageAddDto;
@@ -46,25 +65,25 @@ export class PostService {
       data: updatedPost,
       msg: MESSAGES.POST_NEW_IMAGE_ADD,
     };
-    
+
   }
 
   async postImgDelete(postId: string, imgId: string): Promise<any> {
-     let existsPost = await this.postModel.findOne({_id: postId})
-     if(!existsPost){
-      return{
+    let existsPost = await this.postModel.findOne({ _id: postId })
+    if (!existsPost) {
+      return {
         success: false,
         statusCode: STATUS_CODES.NOT_FOUND,
         data: {},
         msg: MESSAGES.POST_NOT_FOUND
       }
-     }
+    }
 
-     const result = await this.postModel.updateOne(
+    const result = await this.postModel.updateOne(
       { _id: postId, "images._id": imgId },
       { $set: { "images.$.isDeleted": true } }
     );
-  
+
     if (result.modifiedCount === 0) {
       return {
         success: false,
@@ -73,14 +92,14 @@ export class PostService {
         msg: MESSAGES.POST_IMG_DELETE_ERR,
       };
     }
-  
+
     return {
       success: true,
       statusCode: STATUS_CODES.OK,
       msg: MESSAGES.POST_IMG_MARKED_DELETED,
       data: {},
     };
-     
+
   }
 
   async createPost(createPostDto: CreatePostDto, userId: string, imageObjects: { url: string }[]): Promise<any> {
@@ -132,7 +151,7 @@ export class PostService {
             $filter: {
               input: "$images",
               as: "image",
-              cond: { $eq: ["$$image.isDeleted",false] }
+              cond: { $eq: ["$$image.isDeleted", false] }
             }
           }
         }
