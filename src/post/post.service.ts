@@ -12,12 +12,13 @@ export class PostService {
         @InjectModel(Post.name) private postModel: Model<PostDocument>,
     ) { }
 
-    async createPost(createPostDto: CreatePostDto, userId: string): Promise<any> {
+    async createPost(createPostDto: CreatePostDto, userId: string, imagePaths: string[]): Promise<any> {
         
         const newPost = new this.postModel({
           userId: userId,
           title: createPostDto.title,
           description: createPostDto.description,
+          images: imagePaths,
         });
         await newPost.save()
 

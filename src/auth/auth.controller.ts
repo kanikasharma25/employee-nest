@@ -76,6 +76,7 @@ export class AuthController {
       }),
     }),
   )
+
   async updateProfile(
     @UploadedFile() file: Express.Multer.File,
     @Body() updateDto: updateDto,
@@ -85,19 +86,18 @@ export class AuthController {
     try {
       const userId = req.user.userId;
 
-    if (file) {
-      updateDto.profileImage = file.filename;
-    }
+      if (file) {
+        updateDto.profileImage = file.filename;
+      }
 
-    const {data, msg,statusCode,success} = await this.authService.updateProfile(userId, updateDto);
-    if(!success) {
-      return response.badRequest(res,msg,data,statusCode)
-    }
-    return response.success(res,msg,data,statusCode)
+      const { data, msg, statusCode, success } = await this.authService.updateProfile(userId, updateDto);
+      if (!success) {
+        return response.badRequest(res, msg, data, statusCode)
+      }
+      return response.success(res, msg, data, statusCode)
     } catch (error) {
-      return  response.serverError(res,error.message)
+      return response.serverError(res, error.message)
     }
   }
-
 
 }
