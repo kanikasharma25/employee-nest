@@ -19,9 +19,38 @@ export class PostService {
         $match: {
           _id: new mongoose.Types.ObjectId(postId)
         }
+      },
+      {
+        $lookup: {
+          from: 'auths',
+          as: 'userDetail',
+          foreignField: '_id',
+          localField: 'userId'
+        }
+      },
+      {
+        $unwind: {
+          path: '$userDetail',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          description: 1,
+          createdAt: 1,
+          images: {
+            $filter: {
+              input: "$images",
+              as: "image",
+              cond: { $eq: ["$$image.isDeleted", false] }
+            }
+          }
+        }
       }
     ])
-    console.log(exists, " Exists =-=-=-=-=-=-=-=-=-=-=-= Exists ")
+
     if (!exists) {
       return {
         success: false,
@@ -29,6 +58,12 @@ export class PostService {
         statusCode: STATUS_CODES.NOT_FOUND,
         data: {}
       }
+    }
+    return {
+      success: true,
+      msg: MESSAGES.POST_DATA_LOADED,
+      statusCode: STATUS_CODES.OK,
+      data: exists[0]
     }
   }
 

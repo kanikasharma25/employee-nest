@@ -1,3 +1,4 @@
+
 import { Body, Controller, Delete, Get, Param, Post, Req, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -143,10 +144,11 @@ export class PostController {
         try {
 
             let {data,msg,success,statusCode} = await this.postService.postView(postId)
-            if(!success){
-                return response.badRequest(res, msg,)
-            }
 
+            if(!success){
+                return response.badRequest(res, msg, data,statusCode)
+            }
+            return response.success(res, msg, data,statusCode)
             } catch (error) {
             console.log(error)
             return response.serverError(res, MESSAGES.SOMETHING_WENT_WRONG, error.message)
